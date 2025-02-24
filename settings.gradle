@@ -1,0 +1,5 @@
+rootProject.name = 'system'
+
+include 'util'
+include 'application-command'
+include 'application-query'

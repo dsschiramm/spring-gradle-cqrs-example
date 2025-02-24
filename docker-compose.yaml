@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  mysql-database:
+    image: mysql/mysql-server:latest
+    container_name: mysql-database
+    restart: always
+    environment:
+      MYSQL_DATABASE: company
+      MYSQL_USER: user
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_PASSWORD: 1234
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "127.0.0.1" ]
+      timeout: 5s
+      retries: 12
+    ports:
+      - "3306:3306"
+    networks:
+      - app-network
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./mysql-database:/docker-entrypoint-initdb.d/:rw
+
+  command:
+    container_name: command
+    build:
+      context: .
+      dockerfile: application-command/Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+    depends_on:
+      mysql-database:
+        condition: service_healthy
+
+  query:
+    container_name: query
+    build:
+      context: .
+      dockerfile: application-query/Dockerfile
+    ports:
+      - "8081:8081"
+    networks:
+      - app-network
+    depends_on:
+      mysql-database:
+        condition: service_healthy
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
