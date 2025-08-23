@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -48,7 +47,7 @@ public class GlobalExceptionHandler {
                         fe.getDefaultMessage(),
                         fe.getCode()
                 ))
-                .collect(Collectors.toList());
+                .toList();
 
         ErrorDTO error = new ErrorDTO("VALIDATION_ERROR",
                 "Validation failed for one or more fields",
@@ -68,7 +67,7 @@ public class GlobalExceptionHandler {
                         cv.getMessage(),
                         cv.getConstraintDescriptor().getAnnotation().annotationType().getSimpleName()
                 ))
-                .collect(Collectors.toList());
+                .toList();
 
         ErrorDTO error = new ErrorDTO("VALIDATION_ERROR",
                 "Validation failed for one or more fields",
