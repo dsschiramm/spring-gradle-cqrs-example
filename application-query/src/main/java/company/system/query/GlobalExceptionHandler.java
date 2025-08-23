@@ -1,6 +1,6 @@
 package company.system.query;
 
-import company.system.utils.models.errors.ErrorResponse;
+import company.system.utils.models.output.ErrorDTO;
 import jakarta.persistence.NoResultException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -18,7 +18,7 @@ public class GlobalExceptionHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse> handleMethodNotValidException(HttpRequestMethodNotSupportedException ex) {
+    public ResponseEntity<ErrorDTO> handleMethodNotValidException(HttpRequestMethodNotSupportedException ex) {
 
         String message = "HTTP method not supported for this endpoint.";
 
@@ -26,15 +26,15 @@ public class GlobalExceptionHandler {
             message += " Supported methods: " + String.join(", ", ex.getSupportedMethods());
         }
 
-        ErrorResponse errorResponse = new ErrorResponse("METHOD_NOT_ALLOWED", message);
+        ErrorDTO errorDTO = new ErrorDTO("METHOD_NOT_ALLOWED", message);
 
-        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(errorResponse);
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(errorDTO);
     }
 
     @ExceptionHandler(NoResultException.class)
-    public ResponseEntity<ErrorResponse> handleNoResultException(NoResultException ignoredException) {
-        ErrorResponse errorResponse = new ErrorResponse("NO_RESULT", "Resource not found.");
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+    public ResponseEntity<ErrorDTO> handleNoResultException(NoResultException ignoredException) {
+        ErrorDTO errorDTO = new ErrorDTO("NO_RESULT", "Resource not found.");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorDTO);
     }
 
     /*
@@ -42,16 +42,16 @@ public class GlobalExceptionHandler {
             and tracking could be done to facilitate analysis and maintainability.
     */
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleGlobalException(Exception ex, HttpServletRequest request) {
+    public ResponseEntity<ErrorDTO> handleGlobalException(Exception ex, HttpServletRequest request) {
 
         LOGGER.error("UNHANDLED_EXCEPTION ON_REQUEST=[{} {}] EXCEPTION={} MESSAGE={}",
                 request.getMethod(), request.getRequestURI(), ex.getClass().getSimpleName(), ex.getMessage());
 
-        ErrorResponse errorResponse = new ErrorResponse(
+        ErrorDTO errorDTO = new ErrorDTO(
                 "INTERNAL_SERVER_ERROR",
                 "An unexpected error occurred. Please contact support."
         );
 
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorDTO);
     }
 }

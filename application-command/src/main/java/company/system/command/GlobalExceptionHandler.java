@@ -1,8 +1,8 @@
 package company.system.command;
 
 import company.system.command.exceptions.DomainException;
-import company.system.utils.models.errors.ErrorResponse;
-import company.system.utils.models.errors.FieldValidationError;
+import company.system.utils.models.output.ErrorDTO;
+import company.system.utils.models.output.FieldValidationDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;
@@ -23,7 +23,7 @@ public class GlobalExceptionHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
-    public ResponseEntity<ErrorResponse> handleMethodNotValidException(HttpRequestMethodNotSupportedException ex) {
+    public ResponseEntity<ErrorDTO> handleMethodNotValidException(HttpRequestMethodNotSupportedException ex) {
 
         String message = "HTTP method not supported for this endpoint.";
 
@@ -31,18 +31,18 @@ public class GlobalExceptionHandler {
             message += " Supported methods: " + String.join(", ", ex.getSupportedMethods());
         }
 
-        ErrorResponse errorResponse = new ErrorResponse("METHOD_NOT_ALLOWED", message);
+        ErrorDTO errorDTO = new ErrorDTO("METHOD_NOT_ALLOWED", message);
 
-        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(errorResponse);
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(errorDTO);
     }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse> handleArgumentNotValidException(MethodArgumentNotValidException ex) {
+    public ResponseEntity<ErrorDTO> handleArgumentNotValidException(MethodArgumentNotValidException ex) {
 
-        List<FieldValidationError> fieldErrors = ex.getBindingResult()
+        List<FieldValidationDTO> fieldErrors = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
-                .map(fe -> new FieldValidationError(
+                .map(fe -> new FieldValidationDTO(
                         fe.getField(),
                         fe.getRejectedValue(),
                         fe.getDefaultMessage(),
@@ -50,7 +50,7 @@ public class GlobalExceptionHandler {
                 ))
                 .collect(Collectors.toList());
 
-        ErrorResponse error = new ErrorResponse("VALIDATION_ERROR",
+        ErrorDTO error = new ErrorDTO("VALIDATION_ERROR",
                 "Validation failed for one or more fields",
                 fieldErrors);
 
@@ -58,11 +58,11 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = ConstraintViolationException.class)
-    public ResponseEntity<ErrorResponse> handleException(ConstraintViolationException ex) {
+    public ResponseEntity<ErrorDTO> handleException(ConstraintViolationException ex) {
 
-        List<FieldValidationError> fieldErrors = ex.getConstraintViolations()
+        List<FieldValidationDTO> fieldErrors = ex.getConstraintViolations()
                 .stream()
-                .map(cv -> new FieldValidationError(
+                .map(cv -> new FieldValidationDTO(
                         cv.getPropertyPath().toString(),
                         cv.getInvalidValue(),
                         cv.getMessage(),
@@ -70,7 +70,7 @@ public class GlobalExceptionHandler {
                 ))
                 .collect(Collectors.toList());
 
-        ErrorResponse error = new ErrorResponse("VALIDATION_ERROR",
+        ErrorDTO error = new ErrorDTO("VALIDATION_ERROR",
                 "Validation failed for one or more fields",
                 fieldErrors);
 
@@ -78,11 +78,11 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(DomainException.class)
-    public ResponseEntity<ErrorResponse> handleDomainException(DomainException ex) {
+    public ResponseEntity<ErrorDTO> handleDomainException(DomainException ex) {
 
         return ResponseEntity.
                 status(HttpStatus.BAD_REQUEST).
-                body(new ErrorResponse(ex.getCode(), ex.getMessage()));
+                body(new ErrorDTO(ex.getCode(), ex.getMessage()));
     }
 
     /*
@@ -90,16 +90,16 @@ public class GlobalExceptionHandler {
             and tracking could be done to facilitate analysis and maintainability.
     */
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleGlobalException(Exception ex, HttpServletRequest request) {
+    public ResponseEntity<ErrorDTO> handleGlobalException(Exception ex, HttpServletRequest request) {
 
         LOGGER.error("UNHANDLED_EXCEPTION ON_REQUEST=[{} {}] EXCEPTION={} MESSAGE={}",
                 request.getMethod(), request.getRequestURI(), ex.getClass().getSimpleName(), ex.getMessage());
 
-        ErrorResponse errorResponse = new ErrorResponse(
+        ErrorDTO errorDTO = new ErrorDTO(
                 "INTERNAL_SERVER_ERROR",
                 "An unexpected error occurred. Please contact support."
         );
 
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorDTO);
     }
 }
