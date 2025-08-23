@@ -32,8 +32,9 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(NoResultException.class)
-    public ResponseEntity<String> handleNoResultException(NoResultException exception) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Resource not found.");
+    public ResponseEntity<ErrorResponse> handleNoResultException(NoResultException ignoredException) {
+        ErrorResponse errorResponse = new ErrorResponse("NO_RESULT", "Resource not found.");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
     /*

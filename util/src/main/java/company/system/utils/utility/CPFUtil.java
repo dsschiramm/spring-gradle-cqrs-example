@@ -2,7 +2,11 @@ package company.system.utils.utility;
 
 import java.util.InputMismatchException;
 
-public class CPFUtil {
+public final class CPFUtil {
+
+    private CPFUtil() {
+        throw new UnsupportedOperationException("This is a utility class and cannot be instantiated.");
+    }
 
     public static String format(String cpf) {
         cpf = cpf.replaceAll("[^0-9]", "");

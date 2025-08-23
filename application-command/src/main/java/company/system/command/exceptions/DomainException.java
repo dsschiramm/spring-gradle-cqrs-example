@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public class DomainException extends Exception {
 
-    private String code;
+    private final String code;
 
     public DomainException(String message) {
         super(message);

@@ -1,6 +1,6 @@
 package company.system.query.dto;
 
-import company.system.utils.CPFUtil;
+import company.system.utils.utility.CPFUtil;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,7 +9,7 @@ import org.hibernate.query.TupleTransformer;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserDTO implements TupleTransformer {
+public class UserDTO implements TupleTransformer<UserDTO> {
 
     private Long id;
     private String fullName;
@@ -23,7 +23,7 @@ public class UserDTO implements TupleTransformer {
         userDTO.setId((Long) tuple[i++]);
         userDTO.setFullName((String) tuple[i++]);
         userDTO.setEmail((String) tuple[i++]);
-        userDTO.setCpf((String) tuple[i++]);
+        userDTO.setCpf((String) tuple[i]);
         return userDTO;
     }
 

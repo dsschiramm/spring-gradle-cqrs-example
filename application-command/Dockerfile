@@ -1,4 +1,4 @@
-FROM gradle:8.12.1-jdk21 as builder
+FROM gradle:8.12.1-jdk21 AS builder
 COPY .. /command
 WORKDIR /command
 RUN gradle clean application-command:bootJar

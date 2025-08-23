@@ -8,9 +8,9 @@ import java.util.List;
 @Getter
 public class ErrorResponse {
 
-    private String code;
-    private String message;
-    private Instant timestamp;
+    private final String code;
+    private final String message;
+    private final Instant timestamp;
     private List<FieldValidationError> fieldErrors;
 
     public ErrorResponse(String code, String message) {
