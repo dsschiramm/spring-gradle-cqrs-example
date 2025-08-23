@@ -2,7 +2,7 @@ package company.system.command.entities;
 
 
 import company.system.command.exceptions.user.InvalidCpfException;
-import company.system.utils.CPFUtil;
+import company.system.utils.utility.CPFUtil;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
