@@ -81,7 +81,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorDTO> handleDomainException(DomainException ex) {
 
         return ResponseEntity.
-                status(HttpStatus.BAD_REQUEST).
+                status(ex.getStatus()).
                 body(new ErrorDTO(ex.getCode(), ex.getMessage()));
     }
 

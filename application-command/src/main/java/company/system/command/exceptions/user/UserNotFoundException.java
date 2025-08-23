@@ -5,6 +5,6 @@ import company.system.command.exceptions.DomainException;
 public class UserNotFoundException extends DomainException {
 
     public UserNotFoundException() {
-        super("user not found.");
+        super("NOT_FOUND", "user not found.", 404);
     }
 }

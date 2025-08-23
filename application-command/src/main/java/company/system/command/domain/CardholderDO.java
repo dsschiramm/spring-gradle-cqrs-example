@@ -1,25 +1,16 @@
-package company.system.command.entities;
-
+package company.system.command.domain;
 
 import company.system.command.exceptions.user.InvalidCpfException;
 import company.system.utils.utility.CPFUtil;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
-@Setter
-@NoArgsConstructor
-@Entity
-@Table(name = "user")
-public class UserEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@AllArgsConstructor
+public class CardholderDO {
 
     @NotBlank
     @Column(name = "full_name")
