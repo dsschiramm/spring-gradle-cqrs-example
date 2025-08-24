@@ -1,5 +1,6 @@
 package company.system.command.domain.models;
 
+import company.system.command.domain.enums.CardholderTypeEnum;
 import company.system.command.domain.requests.CardholderRequest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,7 +22,9 @@ public class CardholderDO {
         this.password = cardholderRequest.password();
 
         if (this.document.length() == 14) {
-
+            type = CardholderTypeEnum.MERCHANT;
+        } else {
+            type = CardholderTypeEnum.PERSON;
         }
     }
 }

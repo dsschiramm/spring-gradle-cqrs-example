@@ -26,7 +26,7 @@ public class GlobalExceptionHandler {
 
         String message = "HTTP method not supported for this endpoint.";
 
-        if (ex.getSupportedMethods() != null && ex.getSupportedMethods().length > 0) {
+        if (ex.getSupportedMethods() != null) {
             message += " Supported methods: " + String.join(", ", ex.getSupportedMethods());
         }
 

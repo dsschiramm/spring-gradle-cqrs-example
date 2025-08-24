@@ -1,6 +1,7 @@
 package company.system.command.entities;
 
 
+import company.system.command.domain.enums.CardholderTypeEnum;
 import company.system.command.domain.models.CardholderDO;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -18,20 +19,31 @@ public class CardholderEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "full_name")
+    @Column(name = "full_name", nullable = false)
     private String fullName;
+
+    @Column(nullable = false)
     private String email;
+
+    @Column(nullable = false)
     private String document;
+
+    @Column(nullable = false)
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private CardholderTypeEnum type;
 
     public CardholderEntity(CardholderDO cardholderDO) {
         this.fullName = cardholderDO.getFullName();
         this.email = cardholderDO.getEmail();
         this.document = cardholderDO.getDocument();
         this.password = cardholderDO.getPassword();
+        this.type = cardholderDO.getType();
     }
 
     public CardholderDO toDO() {
-        return new CardholderDO(this.fullName, this.email, this.document, this.password);
+        return new CardholderDO(fullName, email, document, password, type);
     }
 }

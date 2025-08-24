@@ -67,11 +67,14 @@ public class DocumentValidator implements ConstraintValidator<CPFCNPJ, String> {
     }
 
     private static boolean validate(String document) {
+
         if (document == null) {
             return false;
         }
 
-        document = document.replaceAll("[^0-9]", "");
+        if (!document.matches("\\d+")) {
+            return false;
+        }
 
         if (document.length() == 11) {
             return validateCPF(document);
