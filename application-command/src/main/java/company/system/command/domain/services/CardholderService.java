@@ -1,9 +1,9 @@
 package company.system.command.domain.services;
 
 import company.system.command.domain.exceptions.DomainException;
+import company.system.command.domain.exceptions.user.CardholderNotFoundException;
 import company.system.command.domain.exceptions.user.UniqueDocumentException;
 import company.system.command.domain.exceptions.user.UniqueEmailException;
-import company.system.command.domain.exceptions.user.UserNotFoundException;
 import company.system.command.domain.models.CardholderDO;
 import company.system.command.domain.requests.CardholderRequest;
 import company.system.command.repositories.CardholderRepository;
@@ -34,7 +34,7 @@ public class CardholderService {
         CardholderDO persisted = cardholderRepository.findById(id);
 
         if (persisted == null) {
-            throw new UserNotFoundException();
+            throw new CardholderNotFoundException();
         }
 
         if (!persisted.getDocument().equals(cardholder.getDocument())) {
@@ -53,7 +53,7 @@ public class CardholderService {
         CardholderDO persisted = cardholderRepository.findById(id);
 
         if (persisted == null) {
-            throw new UserNotFoundException();
+            throw new CardholderNotFoundException();
         }
 
         cardholderRepository.delete(id);

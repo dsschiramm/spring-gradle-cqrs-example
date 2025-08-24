@@ -2,6 +2,7 @@ package company.system.command.repositories;
 
 import company.system.command.domain.models.CardholderDO;
 import company.system.command.entities.CardholderEntity;
+import company.system.command.repositories.interfaces.CardholderJPARepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -15,8 +16,13 @@ public class CardholderRepository {
         this.cardholderJPARepository = cardholderJPARepository;
     }
 
-    public boolean existsByDocument(String cpf) {
-        CardholderEntity cardholderEntity = cardholderJPARepository.findByDocument(cpf);
+    public Long findCardholderIdByDocument(String document) {
+        CardholderEntity cardholderEntity = cardholderJPARepository.findByDocument(document);
+        return cardholderEntity != null ? cardholderEntity.getId() : null;
+    }
+
+    public boolean existsByDocument(String document) {
+        CardholderEntity cardholderEntity = cardholderJPARepository.findByDocument(document);
         return cardholderEntity != null;
     }
 

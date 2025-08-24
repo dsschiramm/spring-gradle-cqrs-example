@@ -1,4 +1,4 @@
-package company.system.command.repositories;
+package company.system.command.repositories.interfaces;
 
 
 import company.system.command.entities.CardholderEntity;

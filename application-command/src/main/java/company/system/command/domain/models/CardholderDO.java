@@ -9,11 +9,11 @@ import lombok.Getter;
 @AllArgsConstructor
 public class CardholderDO {
 
-    private String fullName;
-    private String email;
-    private String document;
-    private String password;
-    private CardholderTypeEnum type;
+    private final String fullName;
+    private final String email;
+    private final String document;
+    private final String password;
+    private final CardholderTypeEnum type;
 
     public CardholderDO(CardholderRequest cardholderRequest) {
         this.fullName = cardholderRequest.fullName();
