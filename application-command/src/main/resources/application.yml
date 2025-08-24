@@ -2,8 +2,7 @@ spring:
   application:
     name: application-command
   datasource:
-    #    url: jdbc:mysql://mysql-database:3306/company
-    url: jdbc:mysql://localhost:3306/company
+    url: jdbc:mysql://mysql-database:3306/company
     username: application-command
     password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
