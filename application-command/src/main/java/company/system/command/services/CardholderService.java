@@ -2,7 +2,8 @@ package company.system.command.services;
 
 import company.system.command.domain.CardholderDO;
 import company.system.command.exceptions.DomainException;
-import company.system.command.exceptions.user.UniqueCpfException;
+import company.system.command.exceptions.user.UniqueDocumentException;
+import company.system.command.exceptions.user.UniqueEmailException;
 import company.system.command.exceptions.user.UserNotFoundException;
 import company.system.command.repositories.CardholderRepository;
 import org.springframework.stereotype.Service;
@@ -18,15 +19,13 @@ public class CardholderService {
 
     public Long create(CardholderDO cardholder) throws DomainException {
 
-        cardholder.validate();
-        validateIfCpfUnique(cardholder.getCpf());
+        validateIfDocumentUnique(cardholder.getDocument());
+        validateIfEmailUnique(cardholder.getEmail());
 
         return cardholderRepository.save(cardholder);
     }
 
     public void update(Long id, CardholderDO cardholder) throws DomainException {
-
-        cardholder.validate();
 
         CardholderDO persisted = cardholderRepository.findById(id);
 
@@ -34,8 +33,12 @@ public class CardholderService {
             throw new UserNotFoundException();
         }
 
-        if (!persisted.getCpf().equals(cardholder.getCpf())) {
-            validateIfCpfUnique(cardholder.getCpf());
+        if (!persisted.getDocument().equals(cardholder.getDocument())) {
+            validateIfDocumentUnique(cardholder.getDocument());
+        }
+
+        if (!persisted.getEmail().equals(cardholder.getEmail())) {
+            validateIfEmailUnique(cardholder.getDocument());
         }
 
         cardholderRepository.update(id, cardholder);
@@ -52,10 +55,17 @@ public class CardholderService {
         cardholderRepository.delete(id);
     }
 
-    private void validateIfCpfUnique(String cpf) throws DomainException {
+    private void validateIfDocumentUnique(String document) throws DomainException {
 
-        if (cardholderRepository.existsByCpf(cpf)) {
-            throw new UniqueCpfException();
+        if (cardholderRepository.existsByDocument(document)) {
+            throw new UniqueDocumentException();
+        }
+    }
+
+    private void validateIfEmailUnique(String email) throws DomainException {
+
+        if (cardholderRepository.existsByEmail(email)) {
+            throw new UniqueEmailException();
         }
     }
 }

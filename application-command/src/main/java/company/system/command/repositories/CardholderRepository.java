@@ -15,8 +15,13 @@ public class CardholderRepository {
         this.cardholderJPARepository = cardholderJPARepository;
     }
 
-    public boolean existsByCpf(String cpf) {
-        CardholderEntity cardholderEntity = cardholderJPARepository.findByCpf(cpf);
+    public boolean existsByDocument(String cpf) {
+        CardholderEntity cardholderEntity = cardholderJPARepository.findByDocument(cpf);
+        return cardholderEntity != null;
+    }
+
+    public boolean existsByEmail(String email) {
+        CardholderEntity cardholderEntity = cardholderJPARepository.findByEmail(email);
         return cardholderEntity != null;
     }
 

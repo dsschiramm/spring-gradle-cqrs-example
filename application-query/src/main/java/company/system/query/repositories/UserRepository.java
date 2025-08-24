@@ -19,7 +19,7 @@ public class UserRepository {
     public List<UserDTO> getAllUsers() {
 
         return entityManager.unwrap(Session.class)
-                .createNativeQuery("SELECT id, full_name, email, cpf FROM user", UserDTO.class)
+                .createNativeQuery("SELECT id, full_name, email, document FROM user", UserDTO.class)
                 .setTupleTransformer(new UserDTO()::transformTuple)
                 .list();
     }
@@ -27,7 +27,7 @@ public class UserRepository {
     public UserDTO getUserById(Long id) {
 
         return entityManager.unwrap(Session.class)
-                .createNativeQuery("SELECT id, full_name, email, cpf FROM user where id = :id", UserDTO.class)
+                .createNativeQuery("SELECT id, full_name, email, document FROM user where id = :id", UserDTO.class)
                 .setParameter("id", id)
                 .setTupleTransformer(new UserDTO()::transformTuple)
                 .getSingleResult();

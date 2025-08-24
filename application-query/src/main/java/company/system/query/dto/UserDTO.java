@@ -1,6 +1,5 @@
 package company.system.query.dto;
 
-import company.system.utils.utility.CPFUtil;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,7 +13,7 @@ public class UserDTO implements TupleTransformer<UserDTO> {
     private Long id;
     private String fullName;
     private String email;
-    private String cpf;
+    private String document;
 
     @Override
     public UserDTO transformTuple(Object[] tuple, String[] aliases) {
@@ -23,11 +22,7 @@ public class UserDTO implements TupleTransformer<UserDTO> {
         userDTO.setId((Long) tuple[i++]);
         userDTO.setFullName((String) tuple[i++]);
         userDTO.setEmail((String) tuple[i++]);
-        userDTO.setCpf((String) tuple[i]);
+        userDTO.setDocument((String) tuple[i]);
         return userDTO;
-    }
-
-    public String getCpf() {
-        return CPFUtil.format(cpf);
     }
 }

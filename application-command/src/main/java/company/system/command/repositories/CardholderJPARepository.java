@@ -8,5 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CardholderJPARepository extends JpaRepository<CardholderEntity, Long> {
 
-    CardholderEntity findByCpf(String cpf);
+    CardholderEntity findByDocument(String cpf);
+
+    CardholderEntity findByEmail(String email);
 }

@@ -20,15 +20,17 @@ public class CardholderEntity {
 
     private String fullName;
     private String email;
-    private String cpf;
+    private String document;
+    private String password;
 
     public CardholderEntity(CardholderDO cardholderDO) {
         this.fullName = cardholderDO.getFullName();
         this.email = cardholderDO.getEmail();
-        this.cpf = cardholderDO.getCpf();
+        this.document = cardholderDO.getDocument();
+        this.password = cardholderDO.getPassword();
     }
 
     public CardholderDO toDO() {
-        return new CardholderDO(this.fullName, this.email, this.cpf);
+        return new CardholderDO(this.fullName, this.email, this.document, this.password);
     }
 }
