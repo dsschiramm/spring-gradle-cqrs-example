@@ -1,10 +1,11 @@
-package company.system.command.services;
+package company.system.command.domain.services;
 
-import company.system.command.domain.CardholderDO;
-import company.system.command.exceptions.DomainException;
-import company.system.command.exceptions.user.UniqueDocumentException;
-import company.system.command.exceptions.user.UniqueEmailException;
-import company.system.command.exceptions.user.UserNotFoundException;
+import company.system.command.domain.exceptions.DomainException;
+import company.system.command.domain.exceptions.user.UniqueDocumentException;
+import company.system.command.domain.exceptions.user.UniqueEmailException;
+import company.system.command.domain.exceptions.user.UserNotFoundException;
+import company.system.command.domain.models.CardholderDO;
+import company.system.command.domain.requests.CardholderRequest;
 import company.system.command.repositories.CardholderRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +18,9 @@ public class CardholderService {
         this.cardholderRepository = cardholderRepository;
     }
 
-    public Long create(CardholderDO cardholder) throws DomainException {
+    public Long create(CardholderRequest cardholderRequest) throws DomainException {
+
+        CardholderDO cardholder = new CardholderDO(cardholderRequest);
 
         validateIfDocumentUnique(cardholder.getDocument());
         validateIfEmailUnique(cardholder.getEmail());
@@ -25,8 +28,9 @@ public class CardholderService {
         return cardholderRepository.save(cardholder);
     }
 
-    public void update(Long id, CardholderDO cardholder) throws DomainException {
+    public void update(Long id, CardholderRequest cardholderRequest) throws DomainException {
 
+        CardholderDO cardholder = new CardholderDO(cardholderRequest);
         CardholderDO persisted = cardholderRepository.findById(id);
 
         if (persisted == null) {

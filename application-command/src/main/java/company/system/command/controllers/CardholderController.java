@@ -1,8 +1,8 @@
 package company.system.command.controllers;
 
-import company.system.command.domain.CardholderDO;
-import company.system.command.exceptions.DomainException;
-import company.system.command.services.CardholderService;
+import company.system.command.domain.exceptions.DomainException;
+import company.system.command.domain.requests.CardholderRequest;
+import company.system.command.domain.services.CardholderService;
 import company.system.utils.models.output.GenericResponseDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -21,10 +21,10 @@ public class CardholderController {
 
     @PostMapping
     public ResponseEntity<GenericResponseDTO> create(
-            @RequestBody @Valid CardholderDO cardholderDO
+            @RequestBody @Valid CardholderRequest cardholderRequest
     ) throws DomainException {
 
-        Long createdId = cardholderService.create(cardholderDO);
+        Long createdId = cardholderService.create(cardholderRequest);
 
         return new ResponseEntity<>(
                 new GenericResponseDTO(createdId, "Cardholder created."),
@@ -34,10 +34,10 @@ public class CardholderController {
     @PutMapping("/{id}")
     public ResponseEntity<GenericResponseDTO> update(
             @PathVariable Long id,
-            @RequestBody @Valid CardholderDO cardholderDO
+            @RequestBody @Valid CardholderRequest cardholderRequest
     ) throws DomainException {
 
-        cardholderService.update(id, cardholderDO);
+        cardholderService.update(id, cardholderRequest);
 
         return new ResponseEntity<>(
                 new GenericResponseDTO(null, "Cardholder updated."),

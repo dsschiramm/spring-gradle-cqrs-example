@@ -1,6 +1,6 @@
 package company.system.command.repositories;
 
-import company.system.command.domain.CardholderDO;
+import company.system.command.domain.models.CardholderDO;
 import company.system.command.entities.CardholderEntity;
 import org.springframework.stereotype.Repository;
 

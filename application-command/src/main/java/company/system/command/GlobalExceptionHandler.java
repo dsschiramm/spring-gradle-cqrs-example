@@ -1,6 +1,6 @@
 package company.system.command;
 
-import company.system.command.exceptions.DomainException;
+import company.system.command.domain.exceptions.DomainException;
 import company.system.utils.models.output.ErrorDTO;
 import company.system.utils.models.output.FieldValidationDTO;
 import jakarta.servlet.http.HttpServletRequest;

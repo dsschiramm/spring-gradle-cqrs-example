@@ -1,6 +1,6 @@
-package company.system.command.exceptions.user;
+package company.system.command.domain.exceptions.user;
 
-import company.system.command.exceptions.DomainException;
+import company.system.command.domain.exceptions.DomainException;
 
 public class UniqueDocumentException extends DomainException {
 

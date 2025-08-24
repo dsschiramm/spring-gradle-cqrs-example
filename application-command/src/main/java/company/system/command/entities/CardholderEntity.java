@@ -1,7 +1,7 @@
 package company.system.command.entities;
 
 
-import company.system.command.domain.CardholderDO;
+import company.system.command.domain.models.CardholderDO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +18,7 @@ public class CardholderEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "full_name")
     private String fullName;
     private String email;
     private String document;

@@ -1,4 +1,4 @@
-package company.system.command.exceptions;
+package company.system.command.domain.exceptions;
 
 import lombok.Getter;
 
