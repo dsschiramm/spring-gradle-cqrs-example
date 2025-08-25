@@ -22,4 +22,11 @@ public class TransactionRepository {
         transactionJPARepository.saveAll(
                 transactionDOList.stream().map(TransactionEntity::new).toList());
     }
+
+    public List<TransactionDO> findAllByCardholder(Long cardholderId) {
+        return transactionJPARepository.findAllByCardholderId(cardholderId)
+                .stream()
+                .map(TransactionEntity::toDO)
+                .toList();
+    }
 }

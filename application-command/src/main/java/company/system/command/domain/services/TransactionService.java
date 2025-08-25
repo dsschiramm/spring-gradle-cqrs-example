@@ -1,6 +1,7 @@
 package company.system.command.domain.services;
 
 import company.system.command.domain.exceptions.DomainException;
+import company.system.command.domain.exceptions.transaction.OutOfFundsException;
 import company.system.command.domain.exceptions.user.CardholderNotFoundException;
 import company.system.command.domain.models.TransactionDO;
 import company.system.command.domain.requests.TransactionRequest;
@@ -8,6 +9,7 @@ import company.system.command.repositories.CardholderRepository;
 import company.system.command.repositories.TransactionRepository;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
@@ -34,15 +36,32 @@ public class TransactionService {
             throw new CardholderNotFoundException();
         }
 
+        outOfFundsValidation(accountOrigem, transactionRequest.valor());
+
         Long accountDestination = cardholderRepository.findCardholderIdByDocument(transactionRequest.documentDestination());
 
         if (accountDestination == null) {
             throw new CardholderNotFoundException();
         }
 
-        TransactionDO origemDO = new TransactionDO(operationId, now, transactionRequest.valor(), accountOrigem);
-        TransactionDO destinationDO = new TransactionDO(operationId, now, transactionRequest.valor(), accountDestination);
+        TransactionDO origem = new TransactionDO(operationId, now, transactionRequest.valor().negate(), accountOrigem);
+        TransactionDO destination = new TransactionDO(operationId, now, transactionRequest.valor(), accountDestination);
 
-        transactionRepository.save(List.of(origemDO, destinationDO));
+        transactionRepository.save(List.of(origem, destination));
+    }
+
+    private void outOfFundsValidation(Long cardholderId, BigDecimal valor) throws DomainException {
+
+        List<TransactionDO> transactions = transactionRepository.findAllByCardholder(cardholderId);
+
+        BigDecimal funds = transactions.stream()
+                .map(TransactionDO::getValor)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        funds = funds.subtract(valor);
+
+        if (funds.compareTo(BigDecimal.ZERO) < 0) {
+            throw new OutOfFundsException();
+        }
     }
 }
