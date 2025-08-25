@@ -40,7 +40,7 @@ public class CardholderController {
         cardholderService.update(id, cardholderRequest);
 
         return new ResponseEntity<>(
-                new GenericResponseDTO(null, "Cardholder updated."),
+                new GenericResponseDTO("Cardholder updated."),
                 HttpStatus.OK);
     }
 
@@ -50,7 +50,7 @@ public class CardholderController {
         cardholderService.delete(id);
 
         return new ResponseEntity<>(
-                new GenericResponseDTO(null, "Cardholder deleted."),
+                new GenericResponseDTO("Cardholder deleted."),
                 HttpStatus.OK);
     }
 }

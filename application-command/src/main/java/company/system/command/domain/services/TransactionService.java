@@ -25,7 +25,7 @@ public class TransactionService {
         this.cardholderRepository = cardholderRepository;
     }
 
-    public void transact(TransactionRequest transactionRequest) throws DomainException {
+    public UUID transact(TransactionRequest transactionRequest) throws DomainException {
 
         UUID operationId = UUID.randomUUID();
         Instant now = Instant.now();
@@ -48,6 +48,8 @@ public class TransactionService {
         TransactionDO destination = new TransactionDO(operationId, now, transactionRequest.valor(), accountDestination);
 
         transactionRepository.save(List.of(origem, destination));
+
+        return operationId;
     }
 
     private void outOfFundsValidation(Long cardholderId, BigDecimal valor) throws DomainException {

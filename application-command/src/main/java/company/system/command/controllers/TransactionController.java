@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/transactions")
 public class TransactionController {
@@ -27,10 +29,10 @@ public class TransactionController {
             @RequestBody @Valid TransactionRequest transactionRequest
     ) throws DomainException {
 
-        transactionService.transact(transactionRequest);
+        UUID operationId = transactionService.transact(transactionRequest);
 
         return new ResponseEntity<>(
-                new GenericResponseDTO(null, "transaction confirmed."),
+                new GenericResponseDTO(operationId, "transaction confirmed."),
                 HttpStatus.CREATED);
     }
 }
