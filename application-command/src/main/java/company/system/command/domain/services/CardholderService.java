@@ -50,7 +50,7 @@ public class CardholderService {
         }
 
         if (!persisted.getEmail().equals(cardholder.getEmail())) {
-            validateIfEmailUnique(cardholder.getDocument());
+            validateIfEmailUnique(cardholder.getEmail());
         }
 
         cardholderRepository.update(id, cardholder);
