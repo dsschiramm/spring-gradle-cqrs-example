@@ -15,4 +15,11 @@ public class TransactionDO {
     private final Instant data;
     private final BigDecimal valor;
     private final Long cardholderId;
+
+    public TransactionDO(UUID operationId, BigDecimal valor, Long cardholderId) {
+        this.operationId = operationId;
+        this.data = Instant.now();
+        this.valor = valor;
+        this.cardholderId = cardholderId;
+    }
 }

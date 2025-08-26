@@ -29,4 +29,8 @@ public class TransactionRepository {
                 .map(TransactionEntity::toDO)
                 .toList();
     }
+
+    public void save(TransactionDO credit) {
+        transactionJPARepository.save(new TransactionEntity(credit));
+    }
 }

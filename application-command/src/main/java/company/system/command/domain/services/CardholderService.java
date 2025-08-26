@@ -9,13 +9,17 @@ import company.system.command.domain.requests.CardholderRequest;
 import company.system.command.repositories.CardholderRepository;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 @Service
 public class CardholderService {
 
     private final CardholderRepository cardholderRepository;
+    private final TransactionService transactionService;
 
-    public CardholderService(CardholderRepository cardholderRepository) {
+    public CardholderService(CardholderRepository cardholderRepository, TransactionService transactionService) {
         this.cardholderRepository = cardholderRepository;
+        this.transactionService = transactionService;
     }
 
     public Long create(CardholderRequest cardholderRequest) throws DomainException {
@@ -25,7 +29,11 @@ public class CardholderService {
         validateIfDocumentUnique(cardholder.getDocument());
         validateIfEmailUnique(cardholder.getEmail());
 
-        return cardholderRepository.save(cardholder);
+        Long cardholderId = cardholderRepository.save(cardholder);
+
+        transactionService.credit(cardholder.getOperationId(), cardholderId, new BigDecimal("500.00"));
+
+        return cardholderId;
     }
 
     public void update(Long id, CardholderRequest cardholderRequest) throws DomainException {

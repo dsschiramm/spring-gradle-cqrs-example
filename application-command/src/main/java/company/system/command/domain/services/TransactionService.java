@@ -25,6 +25,10 @@ public class TransactionService {
         this.cardholderRepository = cardholderRepository;
     }
 
+    public void credit(UUID operationId, Long cardholderId, BigDecimal valor) {
+        transactionRepository.save(new TransactionDO(operationId, valor, cardholderId));
+    }
+
     public UUID transact(TransactionRequest transactionRequest) throws DomainException {
 
         UUID operationId = UUID.randomUUID();

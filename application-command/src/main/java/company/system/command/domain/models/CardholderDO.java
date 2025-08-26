@@ -5,10 +5,13 @@ import company.system.command.domain.requests.CardholderRequest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.UUID;
+
 @Getter
 @AllArgsConstructor
 public class CardholderDO {
 
+    private final UUID operationId;
     private final String fullName;
     private final String email;
     private final String document;
@@ -16,6 +19,7 @@ public class CardholderDO {
     private final CardholderTypeEnum type;
 
     public CardholderDO(CardholderRequest cardholderRequest) {
+        this.operationId = UUID.randomUUID();
         this.fullName = cardholderRequest.fullName();
         this.email = cardholderRequest.email();
         this.document = cardholderRequest.document();
