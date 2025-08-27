@@ -84,7 +84,7 @@ class CardholderServiceTest {
         when(cardholderRepository.existsByDocument(anyString())).thenReturn(false);
         when(cardholderRepository.existsByEmail(request.email())).thenReturn(false);
         when(cardholderRepository.findById(1L)).thenReturn(
-                new CardholderDO(UUID.randomUUID(), "bbb", "bbb@bbb.com", "79927764022", "4321", CardholderTypeEnum.MERCHANT));
+                new CardholderDO(UUID.randomUUID(), "bbb", "bbb@bbb.com", "79927764022", "4321", CardholderTypeEnum.MERCHANT, 1L));
 
         cardholderService.update(1L, request);
 

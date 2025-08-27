@@ -1,21 +1,22 @@
 package company.system.command;
 
+import company.system.command.domain.enums.CardholderTypeEnum;
 import company.system.command.domain.exceptions.DomainException;
+import company.system.command.domain.exceptions.transaction.MerchantTransferException;
 import company.system.command.domain.exceptions.transaction.OutOfFundsException;
 import company.system.command.domain.exceptions.user.CardholderNotFoundException;
+import company.system.command.domain.models.CardholderDO;
 import company.system.command.domain.models.TransactionDO;
 import company.system.command.domain.requests.TransactionRequest;
 import company.system.command.domain.services.TransactionService;
 import company.system.command.repositories.CardholderRepository;
 import company.system.command.repositories.TransactionRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -26,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
+@ExtendWith(org.mockito.junit.jupiter.MockitoExtension.class)
 class TransactionServiceTest {
 
     @Mock
@@ -38,11 +39,6 @@ class TransactionServiceTest {
     @InjectMocks
     private TransactionService transactionService;
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
-
     @Test
     @DisplayName("transact success")
     void transactSuccess() throws DomainException {
@@ -51,9 +47,13 @@ class TransactionServiceTest {
         String destinationDocument = "88823598087";
         BigDecimal amount = new BigDecimal("10.00");
 
-        when(cardholderRepository.findCardholderIdByDocument(originDocument)).thenReturn(1L);
-        when(cardholderRepository.findCardholderIdByDocument(destinationDocument)).thenReturn(2L);
-        when(transactionRepository.findAllByCardholder(1L)).thenReturn(List.of(new TransactionDO(UUID.randomUUID(), amount, 1l)));
+        when(cardholderRepository.findCardholderByDocument(originDocument)).thenReturn(
+                new CardholderDO(UUID.randomUUID(), "aaa", "aaa@aaa.com", "22040998055", "1234", CardholderTypeEnum.PERSON, 1L));
+
+        when(cardholderRepository.findCardholderByDocument(destinationDocument)).thenReturn(
+                new CardholderDO(UUID.randomUUID(), "bbb", "bbb@bbb.com", "88823598087", "4321", CardholderTypeEnum.PERSON, 2L));
+
+        when(transactionRepository.findAllByCardholder(1L)).thenReturn(List.of(new TransactionDO(UUID.randomUUID(), amount, 1L)));
 
         TransactionRequest request = new TransactionRequest(originDocument, destinationDocument, amount);
 
@@ -95,18 +95,34 @@ class TransactionServiceTest {
 
     @Test
     @DisplayName("throw OutOfFundsException when try transact without funds")
-    void outOfFundsTest() throws DomainException {
+    void outOfFundsTest() {
 
         String originDocument = "20355090090";
         String destinationDocument = "52281915000";
         BigDecimal amount = new BigDecimal("1000.00");
 
-        when(cardholderRepository.findCardholderIdByDocument(originDocument)).thenReturn(1L);
-        when(cardholderRepository.findCardholderIdByDocument(destinationDocument)).thenReturn(2L);
+        when(cardholderRepository.findCardholderByDocument(originDocument)).thenReturn(
+                new CardholderDO(UUID.randomUUID(), "bbb", "bbb@bbb.com", "20355090090", "4321", CardholderTypeEnum.PERSON, 1L));
 
         TransactionRequest request = new TransactionRequest(originDocument, destinationDocument, amount);
 
         assertThrows(OutOfFundsException.class, () -> transactionService.transact(request));
+    }
+
+    @Test
+    @DisplayName("throw MerchantTransferException when try transact with Merchant")
+    void merchantTransferTest() {
+
+        String originDocument = "20355090090";
+        String destinationDocument = "52281915000";
+        BigDecimal amount = new BigDecimal("1000.00");
+
+        when(cardholderRepository.findCardholderByDocument(originDocument)).thenReturn(
+                new CardholderDO(UUID.randomUUID(), "bbb", "bbb@bbb.com", "20355090090", "4321", CardholderTypeEnum.MERCHANT, 1L));
+
+        TransactionRequest request = new TransactionRequest(originDocument, destinationDocument, amount);
+
+        assertThrows(MerchantTransferException.class, () -> transactionService.transact(request));
     }
 
     @Test
@@ -119,8 +135,7 @@ class TransactionServiceTest {
 
         TransactionRequest request = new TransactionRequest(originDocument, destinationDocument, amount);
 
-        when(cardholderRepository.findCardholderIdByDocument(originDocument)).thenReturn(null);
-        when(cardholderRepository.findCardholderIdByDocument(destinationDocument)).thenReturn(null);
+        when(cardholderRepository.findCardholderByDocument(originDocument)).thenReturn(null);
 
         assertThrows(CardholderNotFoundException.class, () -> transactionService.transact(request));
     }

@@ -50,6 +50,6 @@ public class CardholderEntity {
     }
 
     public CardholderDO toDO() {
-        return new CardholderDO(operationId, fullName, email, document, password, type);
+        return new CardholderDO(operationId, fullName, email, document, password, type, id);
     }
 }

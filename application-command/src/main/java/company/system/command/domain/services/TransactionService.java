@@ -1,8 +1,11 @@
 package company.system.command.domain.services;
 
+import company.system.command.domain.enums.CardholderTypeEnum;
 import company.system.command.domain.exceptions.DomainException;
+import company.system.command.domain.exceptions.transaction.MerchantTransferException;
 import company.system.command.domain.exceptions.transaction.OutOfFundsException;
 import company.system.command.domain.exceptions.user.CardholderNotFoundException;
+import company.system.command.domain.models.CardholderDO;
 import company.system.command.domain.models.TransactionDO;
 import company.system.command.domain.requests.TransactionRequest;
 import company.system.command.repositories.CardholderRepository;
@@ -34,22 +37,26 @@ public class TransactionService {
         UUID operationId = UUID.randomUUID();
         Instant now = Instant.now();
 
-        Long accountOrigem = cardholderRepository.findCardholderIdByDocument(transactionRequest.documentOrigin());
+        CardholderDO accountOrigem = cardholderRepository.findCardholderByDocument(transactionRequest.documentOrigin());
 
         if (accountOrigem == null) {
             throw new CardholderNotFoundException();
         }
 
-        outOfFundsValidation(accountOrigem, transactionRequest.valor());
+        if (CardholderTypeEnum.MERCHANT.equals(accountOrigem.getType())) {
+            throw new MerchantTransferException();
+        }
 
-        Long accountDestination = cardholderRepository.findCardholderIdByDocument(transactionRequest.documentDestination());
+        outOfFundsValidation(accountOrigem.getId(), transactionRequest.valor());
+
+        CardholderDO accountDestination = cardholderRepository.findCardholderByDocument(transactionRequest.documentDestination());
 
         if (accountDestination == null) {
             throw new CardholderNotFoundException();
         }
 
-        TransactionDO origem = new TransactionDO(operationId, now, transactionRequest.valor().negate(), accountOrigem);
-        TransactionDO destination = new TransactionDO(operationId, now, transactionRequest.valor(), accountDestination);
+        TransactionDO origem = new TransactionDO(operationId, now, transactionRequest.valor().negate(), accountOrigem.getId());
+        TransactionDO destination = new TransactionDO(operationId, now, transactionRequest.valor(), accountDestination.getId());
 
         transactionRepository.save(List.of(origem, destination));
 

@@ -16,9 +16,9 @@ public class CardholderRepository {
         this.cardholderJPARepository = cardholderJPARepository;
     }
 
-    public Long findCardholderIdByDocument(String document) {
+    public CardholderDO findCardholderByDocument(String document) {
         CardholderEntity cardholderEntity = cardholderJPARepository.findByDocument(document);
-        return cardholderEntity != null ? cardholderEntity.getId() : null;
+        return cardholderEntity != null ? cardholderEntity.toDO() : null;
     }
 
     public boolean existsByDocument(String document) {

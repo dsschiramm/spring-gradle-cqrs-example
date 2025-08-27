@@ -17,6 +17,7 @@ public class CardholderDO {
     private final String document;
     private final String password;
     private final CardholderTypeEnum type;
+    private Long id;
 
     public CardholderDO(CardholderRequest cardholderRequest) {
         this.operationId = UUID.randomUUID();
