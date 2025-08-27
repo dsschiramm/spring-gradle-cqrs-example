@@ -5,6 +5,7 @@ import jakarta.persistence.NoResultException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -31,8 +32,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(errorDTO);
     }
 
-    @ExceptionHandler(NoResultException.class)
-    public ResponseEntity<ErrorDTO> handleNoResultException(NoResultException ignoredException) {
+    @ExceptionHandler({NoResultException.class, EmptyResultDataAccessException.class})
+    public ResponseEntity<ErrorDTO> handleNoResultException(Exception ignoredException) {
         ErrorDTO errorDTO = new ErrorDTO("NO_RESULT", "Resource not found.");
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorDTO);
     }
