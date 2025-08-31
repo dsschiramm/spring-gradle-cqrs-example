@@ -1,8 +1,8 @@
-package company.system.command.repositories;
+package company.system.command.infrastructure.repositories;
 
 import company.system.command.domain.models.CardholderDO;
-import company.system.command.entities.CardholderEntity;
-import company.system.command.repositories.interfaces.CardholderJPARepository;
+import company.system.command.infrastructure.entities.CardholderEntity;
+import company.system.command.infrastructure.repositories.interfaces.CardholderJPARepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;

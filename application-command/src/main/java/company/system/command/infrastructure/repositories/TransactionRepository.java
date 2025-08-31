@@ -1,8 +1,8 @@
-package company.system.command.repositories;
+package company.system.command.infrastructure.repositories;
 
 import company.system.command.domain.models.TransactionDO;
-import company.system.command.entities.TransactionEntity;
-import company.system.command.repositories.interfaces.TransactionJPARepository;
+import company.system.command.infrastructure.entities.TransactionEntity;
+import company.system.command.infrastructure.repositories.interfaces.TransactionJPARepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 

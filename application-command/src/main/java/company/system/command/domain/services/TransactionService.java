@@ -2,14 +2,18 @@ package company.system.command.domain.services;
 
 import company.system.command.domain.enums.CardholderTypeEnum;
 import company.system.command.domain.exceptions.DomainException;
+import company.system.command.domain.exceptions.InfrastructureException;
+import company.system.command.domain.exceptions.transaction.AuthorizeServiceException;
 import company.system.command.domain.exceptions.transaction.MerchantTransferException;
+import company.system.command.domain.exceptions.transaction.NotAuthorizedException;
 import company.system.command.domain.exceptions.transaction.OutOfFundsException;
 import company.system.command.domain.exceptions.user.CardholderNotFoundException;
 import company.system.command.domain.models.CardholderDO;
 import company.system.command.domain.models.TransactionDO;
+import company.system.command.domain.ports.IAuthorizeService;
 import company.system.command.domain.requests.TransactionRequest;
-import company.system.command.repositories.CardholderRepository;
-import company.system.command.repositories.TransactionRepository;
+import company.system.command.infrastructure.repositories.CardholderRepository;
+import company.system.command.infrastructure.repositories.TransactionRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -22,10 +26,16 @@ public class TransactionService {
 
     private final TransactionRepository transactionRepository;
     private final CardholderRepository cardholderRepository;
+    private final IAuthorizeService authorizeService;
 
-    public TransactionService(TransactionRepository transactionRepository, CardholderRepository cardholderRepository) {
+    public TransactionService(
+            TransactionRepository transactionRepository,
+            CardholderRepository cardholderRepository,
+            IAuthorizeService authorizeService
+    ) {
         this.transactionRepository = transactionRepository;
         this.cardholderRepository = cardholderRepository;
+        this.authorizeService = authorizeService;
     }
 
     public void credit(UUID operationId, Long cardholderId, BigDecimal valor) {
@@ -53,6 +63,16 @@ public class TransactionService {
 
         if (accountDestination == null) {
             throw new CardholderNotFoundException();
+        }
+
+        try {
+            Boolean authorized = authorizeService.authorize();
+
+            if (!Boolean.TRUE.equals(authorized)) {
+                throw new NotAuthorizedException();
+            }
+        } catch (InfrastructureException e) {
+            throw new AuthorizeServiceException();
         }
 
         TransactionDO origem = new TransactionDO(operationId, now, transactionRequest.valor().negate(), accountOrigem.getId());

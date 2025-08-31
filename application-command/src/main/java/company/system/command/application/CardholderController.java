@@ -1,4 +1,4 @@
-package company.system.command.controllers;
+package company.system.command.application;
 
 import company.system.command.domain.exceptions.DomainException;
 import company.system.command.domain.requests.CardholderRequest;

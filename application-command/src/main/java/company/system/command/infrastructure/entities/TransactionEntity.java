@@ -1,4 +1,4 @@
-package company.system.command.entities;
+package company.system.command.infrastructure.entities;
 
 import company.system.command.domain.models.TransactionDO;
 import jakarta.persistence.*;

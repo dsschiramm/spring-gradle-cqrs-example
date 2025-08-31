@@ -6,7 +6,7 @@ import company.system.command.domain.exceptions.user.UniqueDocumentException;
 import company.system.command.domain.exceptions.user.UniqueEmailException;
 import company.system.command.domain.models.CardholderDO;
 import company.system.command.domain.requests.CardholderRequest;
-import company.system.command.repositories.CardholderRepository;
+import company.system.command.infrastructure.repositories.CardholderRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;

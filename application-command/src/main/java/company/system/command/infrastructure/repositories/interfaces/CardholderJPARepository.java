@@ -1,7 +1,7 @@
-package company.system.command.repositories.interfaces;
+package company.system.command.infrastructure.repositories.interfaces;
 
 
-import company.system.command.entities.CardholderEntity;
+import company.system.command.infrastructure.entities.CardholderEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

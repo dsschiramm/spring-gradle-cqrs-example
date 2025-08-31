@@ -9,7 +9,7 @@ import company.system.command.domain.models.CardholderDO;
 import company.system.command.domain.requests.CardholderRequest;
 import company.system.command.domain.services.CardholderService;
 import company.system.command.domain.services.TransactionService;
-import company.system.command.repositories.CardholderRepository;
+import company.system.command.infrastructure.repositories.CardholderRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
