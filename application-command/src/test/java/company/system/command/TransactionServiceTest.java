@@ -10,7 +10,7 @@ import company.system.command.domain.exceptions.transaction.OutOfFundsException;
 import company.system.command.domain.exceptions.user.CardholderNotFoundException;
 import company.system.command.domain.models.CardholderDO;
 import company.system.command.domain.models.TransactionDO;
-import company.system.command.domain.ports.IAuthorizeService;
+import company.system.command.domain.ports.services.IAuthorizeService;
 import company.system.command.domain.requests.TransactionRequest;
 import company.system.command.domain.services.TransactionService;
 import company.system.command.infrastructure.communications.authorizer.exceptions.NetworkRequestException;

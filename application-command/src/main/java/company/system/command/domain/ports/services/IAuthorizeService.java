@@ -1,4 +1,4 @@
-package company.system.command.domain.ports;
+package company.system.command.domain.ports.services;
 
 import company.system.command.domain.exceptions.InfrastructureException;
 

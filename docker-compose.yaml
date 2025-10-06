@@ -1,10 +1,8 @@
-version: '3.8'
-
 services:
   mysql-database:
     image: mysql/mysql-server:latest
     container_name: mysql-database
-    restart: always
+    restart: unless-stopped
     environment:
       MYSQL_DATABASE: company
       MYSQL_USER: user
@@ -13,7 +11,7 @@ services:
     healthcheck:
       test: [ "CMD", "mysqladmin" ,"ping", "-h", "127.0.0.1" ]
       timeout: 5s
-      retries: 12
+      retries: 5
     ports:
       - "3306:3306"
     networks:
@@ -21,6 +19,26 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql
       - ./mysql-database:/docker-entrypoint-initdb.d/:rw
+
+  rabbitmq:
+    image: rabbitmq:4.1.4-management
+    container_name: rabbitmq
+    restart: unless-stopped
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: 1234
+    healthcheck:
+      test: [ "CMD", "rabbitmqctl", "status" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - app-network
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
 
   command:
     container_name: command
@@ -33,6 +51,8 @@ services:
       - app-network
     depends_on:
       mysql-database:
+        condition: service_healthy
+      rabbitmq:
         condition: service_healthy
 
   query:
@@ -47,6 +67,8 @@ services:
     depends_on:
       mysql-database:
         condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
 
 networks:
   app-network:
@@ -54,3 +76,4 @@ networks:
 
 volumes:
   mysql-data:
+  rabbitmq-data:

@@ -10,7 +10,9 @@ import company.system.command.domain.exceptions.transaction.OutOfFundsException;
 import company.system.command.domain.exceptions.user.CardholderNotFoundException;
 import company.system.command.domain.models.CardholderDO;
 import company.system.command.domain.models.TransactionDO;
-import company.system.command.domain.ports.IAuthorizeService;
+import company.system.command.domain.ports.dtos.NotificationDTO;
+import company.system.command.domain.ports.services.IAuthorizeService;
+import company.system.command.domain.ports.services.INotificationService;
 import company.system.command.domain.requests.TransactionRequest;
 import company.system.command.infrastructure.repositories.CardholderRepository;
 import company.system.command.infrastructure.repositories.TransactionRepository;
@@ -27,15 +29,18 @@ public class TransactionService {
     private final TransactionRepository transactionRepository;
     private final CardholderRepository cardholderRepository;
     private final IAuthorizeService authorizeService;
+    private final INotificationService notificationService;
 
     public TransactionService(
             TransactionRepository transactionRepository,
             CardholderRepository cardholderRepository,
-            IAuthorizeService authorizeService
+            IAuthorizeService authorizeService,
+            INotificationService notificationService
     ) {
         this.transactionRepository = transactionRepository;
         this.cardholderRepository = cardholderRepository;
         this.authorizeService = authorizeService;
+        this.notificationService = notificationService;
     }
 
     public void credit(UUID operationId, Long cardholderId, BigDecimal valor) {
@@ -79,6 +84,11 @@ public class TransactionService {
         TransactionDO destination = new TransactionDO(operationId, now, transactionRequest.valor(), accountDestination.getId());
 
         transactionRepository.save(List.of(origem, destination));
+
+        NotificationDTO notification = new NotificationDTO(
+                accountDestination.getEmail(), transactionRequest.valor(), "TEMPLATE_TRANSACT_RECEIVED");
+
+        notificationService.send(notification);
 
         return operationId;
     }

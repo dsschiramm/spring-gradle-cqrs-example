@@ -1,7 +1,7 @@
 package company.system.command.infrastructure.communications.authorizer.services;
 
 import company.system.command.domain.exceptions.InfrastructureException;
-import company.system.command.domain.ports.IAuthorizeService;
+import company.system.command.domain.ports.services.IAuthorizeService;
 import company.system.command.infrastructure.communications.authorizer.AuthorizerAPI;
 import company.system.command.infrastructure.communications.authorizer.exceptions.NetworkRequestException;
 import company.system.command.infrastructure.communications.authorizer.exceptions.NullableHttpResponseException;
