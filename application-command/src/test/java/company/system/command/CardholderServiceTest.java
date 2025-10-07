@@ -84,7 +84,8 @@ class CardholderServiceTest {
         when(cardholderRepository.existsByDocument(anyString())).thenReturn(false);
         when(cardholderRepository.existsByEmail(request.email())).thenReturn(false);
         when(cardholderRepository.findById(1L)).thenReturn(
-                new CardholderDO(UUID.randomUUID(), "bbb", "bbb@bbb.com", "79927764022", "4321", CardholderTypeEnum.MERCHANT, 1L));
+                new CardholderDO(UUID.randomUUID(), "bbb", "bbb@bbb.com",
+                        "79927764022", "4321", CardholderTypeEnum.MERCHANT, true, 1L));
 
         cardholderService.update(1L, request);
 
@@ -116,10 +117,24 @@ class CardholderServiceTest {
     void deleteTest() throws DomainException {
         CardholderDO persisted = mock(CardholderDO.class);
         when(cardholderRepository.findById(1L)).thenReturn(persisted);
+        when(transactionService.cardholderHasTransaction(1L)).thenReturn(false);
 
         cardholderService.delete(1L);
 
         verify(cardholderRepository).delete(1L);
+    }
+
+    @Test
+    @DisplayName("disable cardholder")
+    void disableCardholder() throws DomainException {
+        CardholderDO persisted = mock(CardholderDO.class);
+        when(cardholderRepository.findById(1L)).thenReturn(persisted);
+        when(transactionService.cardholderHasTransaction(1L)).thenReturn(true);
+
+        cardholderService.delete(1L);
+
+        persisted.desativar();
+        verify(cardholderRepository).update(1L, persisted);
     }
 
     @Test

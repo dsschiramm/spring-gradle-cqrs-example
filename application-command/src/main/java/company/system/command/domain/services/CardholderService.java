@@ -64,7 +64,12 @@ public class CardholderService {
             throw new CardholderNotFoundException();
         }
 
-        cardholderRepository.delete(id);
+        if (transactionService.cardholderHasTransaction(id)) {
+            persisted.desativar();
+            cardholderRepository.update(id, persisted);
+        } else {
+            cardholderRepository.delete(id);
+        }
     }
 
     private void validateIfDocumentUnique(String document) throws DomainException {

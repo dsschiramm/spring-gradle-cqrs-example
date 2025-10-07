@@ -11,4 +11,6 @@ import java.util.List;
 public interface TransactionJPARepository extends JpaRepository<TransactionEntity, Long> {
 
     List<TransactionEntity> findAllByCardholderId(Long cardholderId);
+
+    long countByCardholderId(Long cardholderId);
 }

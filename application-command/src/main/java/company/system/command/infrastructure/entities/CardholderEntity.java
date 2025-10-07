@@ -40,6 +40,9 @@ public class CardholderEntity {
     @Column(nullable = false)
     private CardholderTypeEnum type;
 
+    @Column(nullable = false)
+    private Boolean active;
+
     public CardholderEntity(CardholderDO cardholderDO) {
         this.operationId = cardholderDO.getOperationId();
         this.fullName = cardholderDO.getFullName();
@@ -47,9 +50,10 @@ public class CardholderEntity {
         this.document = cardholderDO.getDocument();
         this.password = cardholderDO.getPassword();
         this.type = cardholderDO.getType();
+        this.active = cardholderDO.getActive();
     }
 
     public CardholderDO toDO() {
-        return new CardholderDO(operationId, fullName, email, document, password, type, id);
+        return new CardholderDO(operationId, fullName, email, document, password, type, active, id);
     }
 }

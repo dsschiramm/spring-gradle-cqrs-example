@@ -56,10 +56,10 @@ class TransactionServiceTest {
         BigDecimal amount = new BigDecimal("10.00");
 
         when(cardholderRepository.findCardholderByDocument(originDocument)).thenReturn(
-                new CardholderDO(UUID.randomUUID(), "aaa", "aaa@aaa.com", "22040998055", "1234", CardholderTypeEnum.PERSON, 1L));
+                new CardholderDO(UUID.randomUUID(), "aaa", "aaa@aaa.com", "22040998055", "1234", CardholderTypeEnum.PERSON, true, 1L));
 
         when(cardholderRepository.findCardholderByDocument(destinationDocument)).thenReturn(
-                new CardholderDO(UUID.randomUUID(), "bbb", "bbb@bbb.com", "88823598087", "4321", CardholderTypeEnum.PERSON, 2L));
+                new CardholderDO(UUID.randomUUID(), "bbb", "bbb@bbb.com", "88823598087", "4321", CardholderTypeEnum.PERSON, true, 2L));
 
         when(transactionRepository.findAllByCardholder(1L)).thenReturn(List.of(new TransactionDO(UUID.randomUUID(), amount, 1L)));
 
@@ -112,10 +112,10 @@ class TransactionServiceTest {
         BigDecimal amount = new BigDecimal("1000.00");
 
         when(cardholderRepository.findCardholderByDocument(originDocument)).thenReturn(
-                new CardholderDO(UUID.randomUUID(), "aaa", "aaa@aaa.com", "22040998055", "1234", CardholderTypeEnum.PERSON, 1L));
+                new CardholderDO(UUID.randomUUID(), "aaa", "aaa@aaa.com", "22040998055", "1234", CardholderTypeEnum.PERSON, true, 1L));
 
         when(cardholderRepository.findCardholderByDocument(destinationDocument)).thenReturn(
-                new CardholderDO(UUID.randomUUID(), "bbb", "bbb@bbb.com", "88823598087", "4321", CardholderTypeEnum.PERSON, 2L));
+                new CardholderDO(UUID.randomUUID(), "bbb", "bbb@bbb.com", "88823598087", "4321", CardholderTypeEnum.PERSON, true, 2L));
 
         when(transactionRepository.findAllByCardholder(1L)).thenReturn(List.of(new TransactionDO(UUID.randomUUID(), amount, 1L)));
 
@@ -136,10 +136,10 @@ class TransactionServiceTest {
         BigDecimal amount = new BigDecimal("1000.00");
 
         when(cardholderRepository.findCardholderByDocument(originDocument)).thenReturn(
-                new CardholderDO(UUID.randomUUID(), "aaa", "aaa@aaa.com", "22040998055", "1234", CardholderTypeEnum.PERSON, 1L));
+                new CardholderDO(UUID.randomUUID(), "aaa", "aaa@aaa.com", "22040998055", "1234", CardholderTypeEnum.PERSON, true, 1L));
 
         when(cardholderRepository.findCardholderByDocument(destinationDocument)).thenReturn(
-                new CardholderDO(UUID.randomUUID(), "bbb", "bbb@bbb.com", "88823598087", "4321", CardholderTypeEnum.PERSON, 2L));
+                new CardholderDO(UUID.randomUUID(), "bbb", "bbb@bbb.com", "88823598087", "4321", CardholderTypeEnum.PERSON, true, 2L));
 
         when(transactionRepository.findAllByCardholder(1L)).thenReturn(List.of(new TransactionDO(UUID.randomUUID(), amount, 1L)));
 
@@ -159,7 +159,7 @@ class TransactionServiceTest {
         BigDecimal amount = new BigDecimal("1000.00");
 
         when(cardholderRepository.findCardholderByDocument(originDocument)).thenReturn(
-                new CardholderDO(UUID.randomUUID(), "bbb", "bbb@bbb.com", "20355090090", "4321", CardholderTypeEnum.PERSON, 1L));
+                new CardholderDO(UUID.randomUUID(), "bbb", "bbb@bbb.com", "20355090090", "4321", CardholderTypeEnum.PERSON, true, 1L));
 
         TransactionRequest request = new TransactionRequest(originDocument, destinationDocument, amount);
 
@@ -175,7 +175,7 @@ class TransactionServiceTest {
         BigDecimal amount = new BigDecimal("1000.00");
 
         when(cardholderRepository.findCardholderByDocument(originDocument)).thenReturn(
-                new CardholderDO(UUID.randomUUID(), "bbb", "bbb@bbb.com", "20355090090", "4321", CardholderTypeEnum.MERCHANT, 1L));
+                new CardholderDO(UUID.randomUUID(), "bbb", "bbb@bbb.com", "20355090090", "4321", CardholderTypeEnum.MERCHANT, true, 1L));
 
         TransactionRequest request = new TransactionRequest(originDocument, destinationDocument, amount);
 

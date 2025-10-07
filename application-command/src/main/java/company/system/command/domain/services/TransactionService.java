@@ -93,6 +93,11 @@ public class TransactionService {
         return operationId;
     }
 
+    public boolean cardholderHasTransaction(Long cardholderId) {
+        Long count = transactionRepository.countByCardholderId(cardholderId);
+        return count != null && count > 0;
+    }
+
     private void outOfFundsValidation(Long cardholderId, BigDecimal valor) throws DomainException {
 
         List<TransactionDO> transactions = transactionRepository.findAllByCardholder(cardholderId);

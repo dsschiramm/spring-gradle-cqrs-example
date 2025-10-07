@@ -17,6 +17,7 @@ public class CardholderDO {
     private final String document;
     private final String password;
     private final CardholderTypeEnum type;
+    private Boolean active;
     private Long id;
 
     public CardholderDO(CardholderRequest cardholderRequest) {
@@ -25,11 +26,16 @@ public class CardholderDO {
         this.email = cardholderRequest.email();
         this.document = cardholderRequest.document();
         this.password = cardholderRequest.password();
+        this.active = true;
 
         if (this.document.length() == 14) {
             type = CardholderTypeEnum.MERCHANT;
         } else {
             type = CardholderTypeEnum.PERSON;
         }
+    }
+
+    public void desativar() {
+        this.active = false;
     }
 }

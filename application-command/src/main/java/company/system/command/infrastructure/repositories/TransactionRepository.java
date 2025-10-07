@@ -30,6 +30,10 @@ public class TransactionRepository {
                 .toList();
     }
 
+    public Long countByCardholderId(Long cardholderId) {
+        return transactionJPARepository.countByCardholderId(cardholderId);
+    }
+
     public void save(TransactionDO credit) {
         transactionJPARepository.save(new TransactionEntity(credit));
     }

@@ -15,6 +15,7 @@ public class CardholderDTO implements TupleTransformer<CardholderDTO> {
     private String email;
     private String document;
     private String type;
+    private Boolean active;
 
     @Override
     public CardholderDTO transformTuple(Object[] tuple, String[] aliases) {
@@ -24,7 +25,8 @@ public class CardholderDTO implements TupleTransformer<CardholderDTO> {
         cardholderDTO.setFullName((String) tuple[i++]);
         cardholderDTO.setEmail((String) tuple[i++]);
         cardholderDTO.setDocument((String) tuple[i++]);
-        cardholderDTO.setType((String) tuple[i]);
+        cardholderDTO.setType((String) tuple[i++]);
+        cardholderDTO.setActive((Boolean) tuple[i]);
         return cardholderDTO;
     }
 }
