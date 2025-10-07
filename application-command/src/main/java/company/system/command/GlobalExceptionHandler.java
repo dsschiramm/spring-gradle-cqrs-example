@@ -94,8 +94,6 @@ public class GlobalExceptionHandler {
         LOGGER.error("UNHANDLED_EXCEPTION ON_REQUEST=[{} {}] EXCEPTION={} MESSAGE={}",
                 request.getMethod(), request.getRequestURI(), ex.getClass().getSimpleName(), ex.getMessage());
 
-        ex.printStackTrace();
-
         ErrorDTO errorDTO = new ErrorDTO(
                 "INTERNAL_SERVER_ERROR",
                 "An unexpected error occurred. Please contact support."

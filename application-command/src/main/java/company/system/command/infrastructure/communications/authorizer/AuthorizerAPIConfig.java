@@ -12,20 +12,17 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class AuthorizerAPIConfig {
 
     @Bean
-    public Retrofit retrofit(
+    public AuthorizerAPI authorizerAPI(
             @Value("${communications.api-authorize-url}") String authorizeURL,
             OkHttpClient okHttpClient,
             Gson gson) {
 
-        return new Retrofit.Builder()
+        Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(authorizeURL)
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
-    }
 
-    @Bean
-    public AuthorizerAPI authorizerAPI(Retrofit retrofit) {
         return retrofit.create(AuthorizerAPI.class);
     }
 }

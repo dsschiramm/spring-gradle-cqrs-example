@@ -1,7 +1,6 @@
 package company.system.command.infrastructure.communications.notification;
 
 import com.google.gson.Gson;
-import company.system.command.infrastructure.communications.notification.interfaces.NotificationAPI;
 import okhttp3.OkHttpClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

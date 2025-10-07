@@ -1,4 +1,4 @@
-package company.system.command.infrastructure.communications.notification.interfaces;
+package company.system.command.infrastructure.communications.notification;
 
 import company.system.command.domain.ports.dtos.NotificationDTO;
 import retrofit2.Call;

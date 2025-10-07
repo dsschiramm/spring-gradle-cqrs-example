@@ -4,7 +4,7 @@ import company.system.command.domain.exceptions.InfrastructureException;
 import company.system.command.domain.ports.dtos.NotificationDTO;
 import company.system.command.infrastructure.communications.authorizer.exceptions.NetworkRequestException;
 import company.system.command.infrastructure.communications.authorizer.exceptions.ResponseRequestException;
-import company.system.command.infrastructure.communications.notification.interfaces.NotificationAPI;
+import company.system.command.infrastructure.communications.notification.NotificationAPI;
 import okhttp3.ResponseBody;
 import org.springframework.stereotype.Service;
 import retrofit2.Call;
